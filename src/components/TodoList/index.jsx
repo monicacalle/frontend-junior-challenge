@@ -1,6 +1,4 @@
 import TodoListItem from "components/TodoListItem";
-import React from "react";
-
 import "./styles.css";
 
 const TodoList = () => {
@@ -16,7 +14,6 @@ const TodoList = () => {
     <div className="todo-list">
       <span className="todo-list-title">Things to do:</span>
       <div className="todo-list-content">
-        {/* Fix an ability to render todos */}
         <TodoListItem />
       </div>
       <div className="no-todos">
