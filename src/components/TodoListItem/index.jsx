@@ -1,8 +1,10 @@
-import React from "react";
-
+import { useSelector } from "react-redux";
 import "./styles.css";
 
 const TodoListItem = ({ onCheck, checked, onDelete, label }) => {
+  const task = useSelector((state) => state.tasks);
+  console.log(task);
+
   return (
     <div className="todo-list-item">
       <div
@@ -17,7 +19,14 @@ const TodoListItem = ({ onCheck, checked, onDelete, label }) => {
           checked={checked}
           onChange={onCheck}
         />
-        <span className={checked ? "todo-list-item-checked" : ""}>{label}</span>
+        {task.map((task) => (
+          <span
+            key={task.id}
+            className={checked ? "todo-list-item-checked" : ""}
+          >
+            {task.title}
+          </span>
+        ))}
       </div>
       <button
         type="button"
