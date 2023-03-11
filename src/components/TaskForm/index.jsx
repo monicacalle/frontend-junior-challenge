@@ -26,8 +26,8 @@ const TaskForm = () => {
   };
 
   return (
-    <div className="container">
-      <form onSubmit={onHandleSubmit}>
+    <form onSubmit={onHandleSubmit}>
+      <div className="form-container">
         <input
           name="label"
           type="text"
@@ -35,8 +35,8 @@ const TaskForm = () => {
           onChange={onHandleChange}
         />
         <button>ADD TO DO</button>
-      </form>
-    </div>
+      </div>
+    </form>
   );
 };
 
