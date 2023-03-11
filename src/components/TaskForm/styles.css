@@ -1,0 +1,13 @@
+form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 400px;
+  margin: 0 auto 5px;
+  cursor: pointer;
+}
+
+form button {
+  background-color: rgb(103, 141, 228);
+  color: white;
+}
