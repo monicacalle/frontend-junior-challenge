@@ -1,11 +1,17 @@
+import { addTask } from "features/tasks/taskSlice";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 import "./styles.css";
 
 const TaskForm = () => {
   const [task, setTask] = useState({
-    title: " ",
+    id: "",
+    label: "",
+    checked: false,
   });
+
+  const dispatch = useDispatch();
 
   const onHandleChange = (e) => {
     setTask({
@@ -16,14 +22,14 @@ const TaskForm = () => {
 
   const onHandleSubmit = (e) => {
     e.preventDefault();
-    console.log(task);
+    dispatch(addTask(task));
   };
 
   return (
     <div className="container">
       <form onSubmit={onHandleSubmit}>
         <input
-          name="title"
+          name="label"
           type="text"
           placeholder="Enter a new to do"
           onChange={onHandleChange}
