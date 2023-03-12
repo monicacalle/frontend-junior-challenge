@@ -38,12 +38,17 @@ export const addNewTasks = (newTask) => async (dispatch) => {
     console.log("error", error);
   }
 };
-export const deleteSelectedTask = (taskid) => async (dispatch) => {
+export const deleteSelectedTask = (taskid, index) => async (dispatch) => {
   try {
     await axios.delete(`${URL}/${taskid}`);
-    dispatch(deleteTask(taskid));
   } catch (error) {
-    console.log("error", error);
+    if (error.response.status === 404) {
+      console.error("Cannot find task on database");
+    } else {
+      console.error("Internal Server Error");
+    }
+  } finally {
+    dispatch(deleteTask(index));
   }
 };
 

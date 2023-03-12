@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import "./styles.css";
 
-let todoItemKey = 1;
 const TodoList = () => {
   const { list } = useSelector((state) => state.tasks);
   const dispatch = useDispatch();
@@ -14,8 +13,8 @@ const TodoList = () => {
     dispatch(getTasks());
   }, [dispatch]);
 
-  const handleDelete = (todoId) => {
-    dispatch(deleteSelectedTask(todoId));
+  const handleDelete = (todoId, index) => {
+    dispatch(deleteSelectedTask(todoId, index));
     console.log(todoId);
   };
 
@@ -28,11 +27,11 @@ const TodoList = () => {
       <span className="todo-list-title">Things to do:</span>
       <div className="todo-list-content">
         {list?.length &&
-          list.map((task) => (
+          list.map((task, index) => (
             <TodoListItem
               task={task}
-              key={todoItemKey++}
-              onDelete={() => handleDelete(task.id)}
+              key={index}
+              onDelete={() => handleDelete(task.id, index)}
             />
           ))}
       </div>
