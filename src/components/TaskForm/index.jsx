@@ -1,28 +1,28 @@
-import { addTask } from "features/tasks/taskSlice";
+import { addNewTasks } from "features/tasks/taskSlice";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import "./styles.css";
 
 const TaskForm = () => {
-  const [task, setTask] = useState({
-    id: "",
-    label: "",
-    checked: false,
-  });
+  const [label, setLabel] = useState("");
 
   const dispatch = useDispatch();
 
   const onHandleChange = (e) => {
-    setTask({
-      ...task,
-      [e.target.name]: e.target.value,
-    });
+    setLabel(e.target.value);
   };
 
   const onHandleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addTask(task));
+    if (!label.length || label === " ") return;
+    dispatch(
+      addNewTasks({
+        label,
+        checked: false,
+      })
+    );
+    setLabel("");
   };
 
   return (
@@ -33,8 +33,11 @@ const TaskForm = () => {
           type="text"
           placeholder="Enter a new to do"
           onChange={onHandleChange}
+          value={label}
         />
-        <button>ADD TO DO</button>
+        <button type="submit" disabled={!label}>
+          ADD TO DO
+        </button>
       </div>
     </form>
   );

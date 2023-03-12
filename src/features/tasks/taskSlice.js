@@ -1,13 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// const initialState = [
-//   {
-//     id: 0,
-//     label: "Fix an ability to display all tasks",
-//     checked: false,
-//   },
-// ];
+const URL =
+  "https://my-json-server.typicode.com/AlvaroArratia/static-todos-api/todos";
 
 export const taskSlice = createSlice({
   name: "tasks",
@@ -15,21 +10,27 @@ export const taskSlice = createSlice({
     list: [],
   },
   reducers: {
-    setList: (state, action) => {
-      state.list = action.payload;
+    setList: (state, { payload }) => {
+      state.list = payload;
     },
-    addTask: (state, action) => {
-      state.push(action.payload);
+    addTask: (state, { payload }) => {
+      state.list.push(payload);
     },
   },
 });
 
 export const getTasks = () => async (dispatch) => {
   try {
-    const { data } = await axios.get(
-      "https://my-json-server.typicode.com/AlvaroArratia/static-todos-api/todos"
-    );
+    const { data } = await axios.get(URL);
     dispatch(setList(data));
+  } catch (error) {
+    console.log("error", error);
+  }
+};
+export const addNewTasks = (newTask) => async (dispatch) => {
+  try {
+    const { data } = await axios.post(URL, newTask);
+    dispatch(addTask(data));
   } catch (error) {
     console.log("error", error);
   }
