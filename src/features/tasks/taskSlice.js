@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
+
 import axios from "axios";
 
 const URL =
@@ -24,6 +26,11 @@ export const taskSlice = createSlice({
     },
     deleteTask: (state, { payload }) => {
       state.list = state.list.filter((task) => task.id !== payload);
+      let counter = 0;
+      state.list.forEach((task) => {
+        if (task.checked) counter++;
+      });
+      state.counter = counter;
     },
     toggleCheck: (state, { payload }) => {
       const newList = state.list.map((task) => {
@@ -44,15 +51,16 @@ export const getTasks = () => async (dispatch) => {
     const { data } = await axios.get(URL);
     dispatch(setList(data));
   } catch (error) {
-    console.log("error", error);
+    toast.error("Can't get todos");
   }
 };
 export const addNewTasks = (newTask) => async (dispatch) => {
   try {
     const { data } = await axios.post(URL, newTask);
     dispatch(addTask(data));
+    toast.success("task added successfully");
   } catch (error) {
-    console.log("error", error);
+    toast.error("Can't add more tasks");
   }
 };
 export const deleteSelectedTask = (taskid) => async (dispatch) => {
@@ -60,20 +68,18 @@ export const deleteSelectedTask = (taskid) => async (dispatch) => {
     await axios.delete(`${URL}/${taskid}`);
     dispatch(deleteTask(taskid));
   } catch (error) {
-    console.error("Internal Server Error");
+    toast.error("Internal Server Error, please try latter");
   }
 };
 
 export const toggleCheckTask = (taskId, checked) => async (dispatch) => {
   try {
-    console.log("(taskId, checked", taskId, checked);
     const { data } = await axios.patch(`${URL}/${taskId}`, {
       checked: !checked,
     });
-    console.log("data", data);
     dispatch(toggleCheck(data));
   } catch (error) {
-    console.error("Internal Server Error");
+    toast.error("Internal Server Error, please try latter");
   }
 };
 
