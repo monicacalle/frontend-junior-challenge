@@ -9,11 +9,11 @@ const TaskForm = () => {
 
   const dispatch = useDispatch();
 
-  const onHandleChange = (e) => {
+  const handleChange = (e) => {
     setLabel(e.target.value);
   };
 
-  const onHandleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!label.length || label === " ") return;
     dispatch(
@@ -26,13 +26,13 @@ const TaskForm = () => {
   };
 
   return (
-    <form onSubmit={onHandleSubmit}>
+    <form onSubmit={handleSubmit}>
       <div className="form-container">
         <input
           name="label"
           type="text"
           placeholder="Enter a new to do"
-          onChange={onHandleChange}
+          onChange={handleChange}
           value={label}
         />
         <button type="submit" disabled={!label}>

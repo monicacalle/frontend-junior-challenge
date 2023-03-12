@@ -16,6 +16,9 @@ export const taskSlice = createSlice({
     addTask: (state, { payload }) => {
       state.list.push(payload);
     },
+    deleteTask: (state, { payload }) => {
+      state.list = state.list.filter((task) => task.id !== payload);
+    },
   },
 });
 
@@ -35,6 +38,14 @@ export const addNewTasks = (newTask) => async (dispatch) => {
     console.log("error", error);
   }
 };
+export const deleteSelectedTask = (taskid) => async (dispatch) => {
+  try {
+    await axios.delete(`${URL}/${taskid}`);
+    dispatch(deleteTask(taskid));
+  } catch (error) {
+    console.log("error", error);
+  }
+};
 
-export const { setList, addTask } = taskSlice.actions;
+export const { setList, addTask, deleteTask } = taskSlice.actions;
 export default taskSlice.reducer;

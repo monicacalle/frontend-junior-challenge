@@ -1,5 +1,5 @@
 import TodoListItem from "components/TodoListItem";
-import { getTasks } from "features/tasks/taskSlice";
+import { getTasks, deleteSelectedTask } from "features/tasks/taskSlice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -13,9 +13,11 @@ const TodoList = () => {
   useEffect(() => {
     dispatch(getTasks());
   }, [dispatch]);
-  // const handleDelete = (todoId) => {
-  //   // Fix an ability to delete task
-  // };
+
+  const handleDelete = (todoId) => {
+    dispatch(deleteSelectedTask(todoId));
+    console.log(todoId);
+  };
 
   // const toggleCheck = (todoId, isChecked) => {
   //   // Fix an ability to toggle task
@@ -26,7 +28,13 @@ const TodoList = () => {
       <span className="todo-list-title">Things to do:</span>
       <div className="todo-list-content">
         {list?.length &&
-          list.map((task) => <TodoListItem task={task} key={todoItemKey++} />)}
+          list.map((task) => (
+            <TodoListItem
+              task={task}
+              key={todoItemKey++}
+              onDelete={() => handleDelete(task.id)}
+            />
+          ))}
       </div>
       {!list?.length && (
         <div className="no-todos">
