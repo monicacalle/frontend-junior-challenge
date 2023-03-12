@@ -8,16 +8,33 @@ export const taskSlice = createSlice({
   name: "tasks",
   initialState: {
     list: [],
+    counter: 0,
   },
   reducers: {
     setList: (state, { payload }) => {
       state.list = payload;
+      let counter = 0;
+      payload.forEach((task) => {
+        if (task.checked) counter++;
+      });
+      state.counter = counter;
     },
     addTask: (state, { payload }) => {
       state.list.push(payload);
     },
     deleteTask: (state, { payload }) => {
       state.list = state.list.filter((task) => task.id !== payload);
+    },
+    toggleCheck: (state, { payload }) => {
+      const newList = state.list.map((task) => {
+        if (task.id === payload.id) {
+          return payload;
+        }
+        return task;
+      });
+      state.counter = state.counter + 1 * (payload.checked ? 1 : -1);
+
+      state.list = newList;
     },
   },
 });
@@ -38,19 +55,27 @@ export const addNewTasks = (newTask) => async (dispatch) => {
     console.log("error", error);
   }
 };
-export const deleteSelectedTask = (taskid, index) => async (dispatch) => {
+export const deleteSelectedTask = (taskid) => async (dispatch) => {
   try {
     await axios.delete(`${URL}/${taskid}`);
+    dispatch(deleteTask(taskid));
   } catch (error) {
-    if (error.response.status === 404) {
-      console.error("Cannot find task on database");
-    } else {
-      console.error("Internal Server Error");
-    }
-  } finally {
-    dispatch(deleteTask(index));
+    console.error("Internal Server Error");
   }
 };
 
-export const { setList, addTask, deleteTask } = taskSlice.actions;
+export const toggleCheckTask = (taskId, checked) => async (dispatch) => {
+  try {
+    console.log("(taskId, checked", taskId, checked);
+    const { data } = await axios.patch(`${URL}/${taskId}`, {
+      checked: !checked,
+    });
+    console.log("data", data);
+    dispatch(toggleCheck(data));
+  } catch (error) {
+    console.error("Internal Server Error");
+  }
+};
+
+export const { setList, addTask, deleteTask, toggleCheck } = taskSlice.actions;
 export default taskSlice.reducer;
