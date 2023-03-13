@@ -22,8 +22,6 @@ const TodoList = () => {
   };
 
   const toggleCheck = (todoId, isChecked) => {
-    console.log("todoId", todoId);
-    console.log("isChecked", isChecked);
     dispatch(toggleCheckTask(todoId, isChecked));
     // Fix an ability to toggle task
   };

@@ -68,7 +68,7 @@ export const deleteSelectedTask = (taskid) => async (dispatch) => {
     await axios.delete(`${URL}/${taskid}`);
     dispatch(deleteTask(taskid));
   } catch (error) {
-    toast.error("Internal Server Error, please try latter");
+    toast.error("Internal Server Error, please try later");
   }
 };
 
@@ -79,7 +79,7 @@ export const toggleCheckTask = (taskId, checked) => async (dispatch) => {
     });
     dispatch(toggleCheck(data));
   } catch (error) {
-    toast.error("Internal Server Error, please try latter");
+    toast.error("Internal Server Error, please try later");
   }
 };
 
